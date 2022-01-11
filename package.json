@@ -12,6 +12,7 @@
     "@emotion/react": "11",
     "@emotion/styled": "11",
     "framer-motion": "5",
+    "googleapis": "^92.0.0",
     "mobx": "^6.3.2",
     "mobx-react-lite": "^3.2.0",
     "mobx-state-tree": "^5.0.2",
