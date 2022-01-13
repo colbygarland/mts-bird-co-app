@@ -10,7 +10,7 @@ export default function Home({ responses }: { responses: UserResponseType[] }) {
       </Center>
       <Box paddingTop="8">
         {responses.map((response) => (
-          <UserResponse user={response} />
+          <UserResponse user={response} key={response.createdAt} />
         ))}
       </Box>
     </Container>
@@ -19,7 +19,6 @@ export default function Home({ responses }: { responses: UserResponseType[] }) {
 
 export async function getStaticProps(_context: any) {
   const data = await getData();
-  console.log(data);
   return {
     props: {
       responses: data ?? null,
