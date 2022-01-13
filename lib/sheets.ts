@@ -8,7 +8,8 @@ export interface UserResponseType {
   quantity: string;
   orderDate: string;
   deposit?: string;
-  depositPaid: boolean;
+  depositPaid: string;
+  emailSent: string;
 }
 
 export async function getData(): Promise<UserResponseType[] | null> {
@@ -40,6 +41,7 @@ export async function getData(): Promise<UserResponseType[] | null> {
             orderDate: row[5],
             deposit: row[7] ?? null,
             depositPaid: row[16],
+            emailSent: row[17],
           }))
           // sort it from most recent
           .reverse()
