@@ -19,8 +19,8 @@ export const UserResponse = ({ user }: UserResponseProps) => {
   const handleCheckboxOnChange = (_event: ChangeEvent<HTMLInputElement>) => {
     setChecked(true);
     axios
-      .post('https://add-netlify-function--mts-bird-co.netlify.app/.netlify/functions/update-google-sheet', {
-        cell: 'Q2',
+      .post(process.env.SERVERLESS_ENDPOINT as string, {
+        cell: `Q${user.id}`,
         data: '1',
       })
       .then((resp) => {
@@ -32,7 +32,10 @@ export const UserResponse = ({ user }: UserResponseProps) => {
   };
   return (
     <Box paddingBottom="10">
-      <Heading color="purple.400">{user.name}</Heading>
+      <Heading color="purple.400">
+        {user.name}
+        {user.id}
+      </Heading>
       <Text color="grey" textDecoration="underline">
         <a href={`mailto:${user.email}`}>{user.email}</a>
       </Text>

@@ -10,6 +10,7 @@ export interface UserResponseType {
   deposit?: string;
   depositPaid: string;
   emailSent: string;
+  id: number;
 }
 
 export async function getData(): Promise<UserResponseType[] | null> {
@@ -28,6 +29,7 @@ export async function getData(): Promise<UserResponseType[] | null> {
     });
     const rows = response.data.values;
     if (rows?.length) {
+      let id = 1;
       return (
         rows
           // remove any empty rows
@@ -42,6 +44,7 @@ export async function getData(): Promise<UserResponseType[] | null> {
             deposit: row[7] ?? null,
             depositPaid: row[16],
             emailSent: row[17],
+            id: id++,
           }))
           // sort it from most recent
           .reverse()
