@@ -1,7 +1,7 @@
 import { Box, Button, Checkbox, Flex, Heading, Text } from '@chakra-ui/react';
 import { ChangeEvent, useState } from 'react';
+import { updateCell } from '../lib/axios';
 import { UserResponseType } from '../lib/sheets';
-import axios from 'axios';
 
 interface UserResponseProps {
   user: UserResponseType;
@@ -18,24 +18,16 @@ export const UserResponse = ({ user }: UserResponseProps) => {
 
   const handleCheckboxOnChange = (_event: ChangeEvent<HTMLInputElement>) => {
     setChecked(true);
-    axios
-      .post('https://add-netlify-function--mts-bird-co.netlify.app/.netlify/functions/update-google-sheet', {
-        cell: `Q${user.id}`,
-        data: '1',
-      })
-      .then((resp) => {
-        console.log(resp);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    updateCell('Q', user.id);
+  };
+
+  const handleEmailOnClick = () => {
+    setEmailSent(true);
+    updateCell('R', user.id);
   };
   return (
     <Box paddingBottom="10">
-      <Heading color="purple.400">
-        {user.name}
-        {user.id}
-      </Heading>
+      <Heading color="purple.400">{user.name}</Heading>
       <Text color="grey" textDecoration="underline">
         <a href={`mailto:${user.email}`}>{user.email}</a>
       </Text>
@@ -52,7 +44,7 @@ export const UserResponse = ({ user }: UserResponseProps) => {
       {checked && (
         <Box paddingTop="4">
           <Flex alignItems="center">
-            <Button size="sm" colorScheme="purple" as="a" href={emailLink} target="_blank" disabled={emailSent}>
+            <Button size="sm" colorScheme="purple" as="a" href={emailLink} target="_blank" disabled={emailSent} onClick={handleEmailOnClick}>
               Send Email
             </Button>
             {emailSent && (
