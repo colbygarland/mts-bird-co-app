@@ -1,6 +1,7 @@
 import { Box, Button, Checkbox, Flex, Heading, Text } from '@chakra-ui/react';
 import { ChangeEvent, useState } from 'react';
 import { UserResponseType } from '../lib/sheets';
+import axios from 'axios';
 
 interface UserResponseProps {
   user: UserResponseType;
@@ -17,6 +18,17 @@ export const UserResponse = ({ user }: UserResponseProps) => {
 
   const handleCheckboxOnChange = (_event: ChangeEvent<HTMLInputElement>) => {
     setChecked(true);
+    axios
+      .post('https://add-netlify-function--mts-bird-co.netlify.app/.netlify/functions/update-google-sheet', {
+        cell: 'Q2',
+        data: '1',
+      })
+      .then((resp) => {
+        console.log(resp);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
   return (
     <Box paddingBottom="10">
