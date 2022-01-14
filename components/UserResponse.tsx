@@ -19,7 +19,7 @@ export const UserResponse = ({ user }: UserResponseProps) => {
   const handleCheckboxOnChange = (_event: ChangeEvent<HTMLInputElement>) => {
     setChecked(true);
     axios
-      .post(process.env.SERVERLESS_ENDPOINT as string, {
+      .post('https://add-netlify-function--mts-bird-co.netlify.app/.netlify/functions/update-google-sheet', {
         cell: `Q${user.id}`,
         data: '1',
       })
