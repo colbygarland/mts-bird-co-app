@@ -54,3 +54,31 @@ export async function getData(): Promise<UserResponseType[] | null> {
   }
   return null;
 }
+
+export async function writeData() {
+  const target = ['https://www.googleapis.com/auth/spreadsheets'];
+  const jwt = new google.auth.JWT(
+    process.env.GOOGLE_SHEETS_CLIENT_EMAIL,
+    undefined,
+    (process.env.GOOGLE_SHEETS_PRIVATE_KEY || '').replace(/\\n/g, '\n'),
+    target
+  );
+  const sheets = google.sheets({ version: 'v4', auth: jwt });
+  const values = [['1']];
+  try {
+    const response = await sheets.spreadsheets.values.update({
+      spreadsheetId: process.env.SPREADSHEET_ID,
+      range: 'Form Responses 1!Q2:Q2',
+      valueInputOption: '',
+      requestBody: {
+        // "majorDimension": "my_majorDimension",
+        //   "range": "my_range",
+        values: values,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+}

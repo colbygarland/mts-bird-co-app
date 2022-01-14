@@ -11,6 +11,7 @@
     "@chakra-ui/react": "^1.7.4",
     "@emotion/react": "11",
     "@emotion/styled": "11",
+    "axios": "^0.24.0",
     "framer-motion": "5",
     "googleapis": "^92.0.0",
     "mobx": "^6.3.2",
