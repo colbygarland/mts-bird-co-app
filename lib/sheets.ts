@@ -64,16 +64,16 @@ export async function writeData() {
     target
   );
   const sheets = google.sheets({ version: 'v4', auth: jwt });
-  const values = [['1']];
   try {
     const response = await sheets.spreadsheets.values.update({
       spreadsheetId: process.env.SPREADSHEET_ID,
       range: 'Form Responses 1!Q2:Q3',
-      valueInputOption: '',
+      valueInputOption: 'RAW',
+      includeValuesInResponse: true,
       requestBody: {
         majorDimension: 'ROWS',
         range: 'Form Responses 1!Q2:Q3',
-        values: values,
+        values: [['1'], ['1']],
       },
     });
     return response.data;
