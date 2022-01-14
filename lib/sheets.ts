@@ -68,11 +68,11 @@ export async function writeData() {
   try {
     const response = await sheets.spreadsheets.values.update({
       spreadsheetId: process.env.SPREADSHEET_ID,
-      range: 'Form Responses 1!Q2:Q2',
+      range: 'Form Responses 1!Q2:Q3',
       valueInputOption: '',
       requestBody: {
-        // "majorDimension": "my_majorDimension",
-        //   "range": "my_range",
+        majorDimension: 'ROWS',
+        range: 'Form Responses 1!Q2:Q3',
         values: values,
       },
     });
