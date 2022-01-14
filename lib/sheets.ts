@@ -10,6 +10,7 @@ export interface UserResponseType {
   deposit?: string;
   depositPaid: string;
   emailSent: string;
+  id: number;
 }
 
 export async function getData(): Promise<UserResponseType[] | null> {
@@ -28,6 +29,7 @@ export async function getData(): Promise<UserResponseType[] | null> {
     });
     const rows = response.data.values;
     if (rows?.length) {
+      let id = 1;
       return (
         rows
           // remove any empty rows
@@ -42,6 +44,7 @@ export async function getData(): Promise<UserResponseType[] | null> {
             deposit: row[7] ?? null,
             depositPaid: row[16],
             emailSent: row[17],
+            id: id++,
           }))
           // sort it from most recent
           .reverse()
@@ -53,4 +56,32 @@ export async function getData(): Promise<UserResponseType[] | null> {
     console.error(error);
   }
   return null;
+}
+
+export async function writeData(cell: string, data: string) {
+  const target = ['https://www.googleapis.com/auth/spreadsheets'];
+  const jwt = new google.auth.JWT(
+    process.env.GOOGLE_SHEETS_CLIENT_EMAIL,
+    undefined,
+    (process.env.GOOGLE_SHEETS_PRIVATE_KEY || '').replace(/\\n/g, '\n'),
+    target
+  );
+  const sheets = google.sheets({ version: 'v4', auth: jwt });
+  try {
+    const response = await sheets.spreadsheets.values.update({
+      spreadsheetId: process.env.SPREADSHEET_ID,
+      range: `Form Responses 1!${cell}`,
+      valueInputOption: 'RAW',
+      includeValuesInResponse: true,
+      requestBody: {
+        majorDimension: 'ROWS',
+        range: `Form Responses 1!${cell}`,
+        values: [[data]],
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
 }

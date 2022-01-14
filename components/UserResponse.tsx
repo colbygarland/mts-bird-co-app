@@ -1,5 +1,6 @@
 import { Box, Button, Checkbox, Flex, Heading, Text } from '@chakra-ui/react';
 import { ChangeEvent, useState } from 'react';
+import { updateCell } from '../lib/axios';
 import { UserResponseType } from '../lib/sheets';
 
 interface UserResponseProps {
@@ -17,6 +18,12 @@ export const UserResponse = ({ user }: UserResponseProps) => {
 
   const handleCheckboxOnChange = (_event: ChangeEvent<HTMLInputElement>) => {
     setChecked(true);
+    updateCell('Q', user.id);
+  };
+
+  const handleEmailOnClick = () => {
+    setEmailSent(true);
+    updateCell('R', user.id);
   };
   return (
     <Box paddingBottom="10">
@@ -37,7 +44,7 @@ export const UserResponse = ({ user }: UserResponseProps) => {
       {checked && (
         <Box paddingTop="4">
           <Flex alignItems="center">
-            <Button size="sm" colorScheme="purple" as="a" href={emailLink} target="_blank" disabled={emailSent}>
+            <Button size="sm" colorScheme="purple" as="a" href={emailLink} target="_blank" disabled={emailSent} onClick={handleEmailOnClick}>
               Send Email
             </Button>
             {emailSent && (
