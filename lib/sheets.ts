@@ -42,8 +42,8 @@ export async function getData(): Promise<UserResponseType[] | null> {
             quantity: row[4],
             orderDate: row[5],
             deposit: row[7] ?? null,
-            depositPaid: row[16],
-            emailSent: row[17],
+            depositPaid: row[16].toString(),
+            emailSent: row[17].toString(),
             id: id++,
           }))
           // sort it from most recent
