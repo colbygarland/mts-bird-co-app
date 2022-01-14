@@ -55,7 +55,7 @@ export async function getData(): Promise<UserResponseType[] | null> {
   return null;
 }
 
-export async function writeData() {
+export async function writeData(cell: string, data: string) {
   const target = ['https://www.googleapis.com/auth/spreadsheets'];
   const jwt = new google.auth.JWT(
     process.env.GOOGLE_SHEETS_CLIENT_EMAIL,
@@ -67,13 +67,13 @@ export async function writeData() {
   try {
     const response = await sheets.spreadsheets.values.update({
       spreadsheetId: process.env.SPREADSHEET_ID,
-      range: 'Form Responses 1!Q2:Q3',
+      range: `Form Responses 1!${cell}`,
       valueInputOption: 'RAW',
       includeValuesInResponse: true,
       requestBody: {
         majorDimension: 'ROWS',
-        range: 'Form Responses 1!Q2:Q3',
-        values: [['1'], ['1']],
+        range: `Form Responses 1!${cell}`,
+        values: [[data]],
       },
     });
     return response.data;
